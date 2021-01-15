@@ -22,7 +22,7 @@ function checkEmail(input) {
     if(re.test(input.value)){
         success(input);
     }else {
-        error(input, 'hatalı bir amil adresi');
+        error(input, 'hatalı bir mail adresi');
     }
 }
 
@@ -36,8 +36,35 @@ function checkRequired(inputs){
     });
 }
 
+function checkLength(input, min, max){
+    if(input.value.length < min) {
+        error(input, `${input.id} en az ${min} karakter olmalı`)
+    }else if(input.value.length>max){
+        error(input, `${input.id} en fazla ${max} karekter olmalıdır`);
+    }else{
+        success(input);
+    }
+}
+
+function checkPassword(input1,input2){
+    if(input1.value!==input2.value){
+        error(input2, 'parolalar eşleşmiyor');
+    }
+}
+function checkPhone(input){
+    var exp = /^\d{10}$/;
+    if(!exp.test(input.value)){
+        error(input, 'telefon 10 karekterli olmalıdır.');
+    }
+    
+}
+
 form.addEventListener('submit', function(e){
     e.preventDefault();
-    checkRequired([username,email,password,repassword]);
+    checkRequired([username,email,password,repassword,phone]);
     checkEmail(email);
+    checkLength(username,7,15);
+    checkLength(password,7,12)
+    checkPassword(password,repassword);
+    checkPhone(phone);
 });
